@@ -16,6 +16,8 @@ uint8_t on = 0;
 uint16_t current_led = 0;
 uint16_t delay_time = 10000;
 
+//Simple test
+
 //buffer
 char buffer[10];
 
