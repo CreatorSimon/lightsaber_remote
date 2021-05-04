@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=atmega328",
+    "board": "arduino:avr:nano",
+    "programmer": "AVR ISP",
+    "port": "COM3",
+    "sketch": "Light.ino"
+}
