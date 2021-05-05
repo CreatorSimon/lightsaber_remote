@@ -3,8 +3,8 @@
 
 #define NUM_LEDS 124
 
-#define DATA_PIN 13
-#define BUTTON 3
+#define DATA_PIN 3
+#define BUTTON 5
 #define COLOR Red
 
 #define EEADIN 0
@@ -16,22 +16,20 @@ uint8_t on = 0;
 uint16_t current_led = 0;
 uint16_t delay_time = 10000;
 
-//Simple test
-
 //buffer
 char buffer[10];
 
 //input variables
 uint8_t receivedInput;
-uint8_t input;
-uint8_t last_input = 18;
+uint8_t input = 3;
+uint8_t last_input = 3;
 
 //hex color
 uint32_t hex_color = 0xFF0000;
 boolean hex_color_set = false;
 
 //brightness 
-uint8_t simple_brightness = 50;
+uint8_t simple_brightness = 100;
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -43,9 +41,9 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(BUTTON), turn_on_off, CHANGE);
 
   //Read Eeprom
-  simple_brightness = EEPROM.read(EEADBR);
-  input = EEPROM.read(EEADIN);
-  hex_color = EEPROM.readLong(EEADHEX);
+  // simple_brightness = EEPROM.read(EEADBR);
+  // input = EEPROM.read(EEADIN);
+  // hex_color = EEPROM.readLong(EEADHEX);
 
   Serial.begin(9600);
 
