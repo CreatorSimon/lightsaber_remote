@@ -11,6 +11,8 @@
 #define EEADBR 1
 #define EEADHEX 2
 
+//GIT Test
+
 uint8_t buttonflag = 0;
 uint8_t on = 0;
 uint16_t current_led = 0;
