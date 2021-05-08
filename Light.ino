@@ -41,9 +41,9 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(BUTTON), turn_on_off, CHANGE);
 
   //Read Eeprom
-  // simple_brightness = EEPROM.read(EEADBR);
-  // input = EEPROM.read(EEADIN);
-  // hex_color = EEPROM.readLong(EEADHEX);
+  simple_brightness = EEPROM.read(EEADBR);
+  input = EEPROM.read(EEADIN);
+  hex_color = EEPROM.readLong(EEADHEX);
 
   Serial.begin(9600);
 
@@ -92,7 +92,6 @@ void lightsaber_mode(void)
 
   if(buttonflag && !on)
   {
-    //audio.play("On.wav");
     for(uint16_t i = current_led; i < NUM_LEDS/2; i++)
     {
       if(!buttonflag)
@@ -101,8 +100,8 @@ void lightsaber_mode(void)
       }
       leds[i] = getHexColor();
       leds[NUM_LEDS-i] = getHexColor();;
-      leds[i].fadeToBlackBy(255-simple_brightness);
-      leds[NUM_LEDS-i].fadeToBlackBy(255-simple_brightness);
+      leds[i].fadeToBlackBy(255 - getSimpleBrightness());
+      leds[NUM_LEDS-i].fadeToBlackBy(255 - getSimpleBrightness());
       current_led = i;
       FastLED.show();
       delay(2); 
@@ -111,7 +110,6 @@ void lightsaber_mode(void)
   }
   if(!buttonflag && on)
   {
-    //audio.play("off.wav");
     for(int16_t i = current_led; i >= 0; i--)
     {
       if(buttonflag)
@@ -205,13 +203,22 @@ uint32_t x2i(char *s)
 void set_simple_brightness(void)
 {
   serialFlush();
+  while(!Serial.available());
+  Serial.readString().toCharArray(buffer, 10);
+
+  delay(100);
+
+  serialFlush();
   Serial.println("Set Brightness:");
   serialFlush();
   while(!Serial.available());
-  simple_brightness = Serial.parseInt();
-  EEPROM.write(EEADBR, simple_brightness);
+  setSimpleBrightness(Serial.parseInt());
+  EEPROM.write(EEADBR, getSimpleBrightness());
 
   set_last_input();
+  Serial.println(input);
+  on = 0;
+  current_led = 0;
 }
 
 /*
@@ -240,6 +247,8 @@ void set_hex_color(void)
     hex_color_set = false;
     set_last_input();
     Serial.println(input);
+    on = 0;
+    current_led = 0;
   }
 }
 
