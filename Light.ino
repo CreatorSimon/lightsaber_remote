@@ -202,13 +202,10 @@ uint32_t x2i(char *s)
 */
 void set_simple_brightness(void)
 {
-  serialFlush();
   while(!Serial.available());
-  Serial.readString().toCharArray(buffer, 10);
 
   delay(100);
 
-  serialFlush();
   Serial.println("Set Brightness:");
   serialFlush();
   while(!Serial.available());
@@ -229,13 +226,10 @@ void set_hex_color(void)
 {
   if(hex_color_set)
   {
-    serialFlush();
     while(!Serial.available());
-    Serial.readString().toCharArray(buffer, 10);
 
     delay(100);
 
-    serialFlush();
     Serial.println("Set Hex Color:");
     serialFlush();
     while(!Serial.available());
