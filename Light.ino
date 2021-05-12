@@ -23,6 +23,7 @@ char buffer[10];
 uint8_t receivedInput;
 uint8_t input = 3;
 uint8_t last_input = 3;
+uint8_t hue_factor = 4;
 
 //hex color
 uint32_t hex_color = 0xFF0000;
@@ -53,7 +54,7 @@ void loop() {
   recvOneChar();
 
   //check if input value is in the range 
-  if(receivedInput > 0 && receivedInput < 4)
+  if(receivedInput > 0 && receivedInput < 6)
   {
     hex_color_set = true;
 
@@ -76,6 +77,46 @@ void loop() {
     case 3:
     lightsaber_mode();
     break;
+
+    case 4:
+    rainbow_circle(50);
+    break;
+
+    case 5:
+    rainbow(50);
+    break;
+  }
+}
+
+/*
+* Rainbow circle mode.
+*/
+void rainbow_circle(int s)
+{
+  for (int j = 0; j < NUM_LEDS / 2; j++)
+  {
+    for (int i = 0; i < NUM_LEDS / 2; i++)
+    {
+      leds[i] = CHSV(0 + (i * hue_factor) - (j * hue_factor), 255, getSimpleBrightness());
+      leds[NUM_LEDS - i] = CHSV(0 + (i * hue_factor) - (j * hue_factor), 255, getSimpleBrightness());
+    }
+    FastLED.show();
+    delay(s);
+  }
+}
+
+/*
+* Moving rainbow effect for all Fans
+*/
+void rainbow(int s)
+{
+  for (int j = 0; j < 255; j++) {
+    for (int i = 0; i < NUM_LEDS / 2; i++) {
+      leds[i] = CHSV(i - (j * 2), 255, getSimpleBrightness()); /* The higher the value 4 the less fade there is and vice versa */ 
+      leds[NUM_LEDS - i] = CHSV(i - (j * 2), 255, getSimpleBrightness()); /* The higher the value 4 the less fade there is and vice versa */ 
+    }
+    FastLED.show();
+    delay(s); /* Change this to your hearts desire, the lower the value the faster your colors move (and vice versa) */
   }
 }
 
